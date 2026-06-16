@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { toast } from "react-hot-toast";
 export default function TestPage() {
     const [score, setScore] = useState(1);
     const [mode, setMode] = useState("😐");
@@ -37,6 +37,7 @@ export default function TestPage() {
                         onClick={
                             () => {
                                 setMode("😊")
+                                toast.success("You Are Now On Happy Mode")
                             }
                         }
                     >
@@ -47,6 +48,7 @@ export default function TestPage() {
                         onClick={
                             () => {
                                 setMode("😐")
+                                toast("You Are Now On Nutaral Mode")
                             }
                         }
                     >
@@ -56,6 +58,7 @@ export default function TestPage() {
                     <button className="w-[90px] h-[40px] bg-blue-500 text-white" onClick={
                         () => {
                             setMode("😢")
+                            toast.success("You Are Now On Sad Mode")
                         }
                     }
                     >
