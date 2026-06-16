@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { FaTwitter } from "react-icons/fa";
+
 export default function TestPage() {
     const [score, setScore] = useState(1);
     const [mode, setMode] = useState("😐");
+    const [isFollowed, setFollowed] = useState(false)
 
     return (
         <div className="w-full h-screen bg-[#00c371] flex justify-center items-center p-8">
@@ -64,8 +67,16 @@ export default function TestPage() {
                     >
                         Sad
                     </button>
-                </div>
 
+                </div>
+                <FaTwitter className={isFollowed ? "text-[100px] text-blue-700" : "text-[100px] text-red-700"}
+                    onClick={
+                        () => {
+                            setFollowed(!isFollowed)
+                            toast.success("You Have Followed Us Successfully🥰")
+                        }
+                    }
+                />
             </div>
         </div>
     );
