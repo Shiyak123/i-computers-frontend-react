@@ -94,6 +94,12 @@ export default function Header() {
                                 <BsPersonCircle className="text-xl text-accent" />
                                 <span className="hidden md:inline font-medium">Account</span>
                             </div>
+                            <Link
+                                to="/orders"
+                                className="hidden sm:inline-flex items-center gap-1 border border-white/20 hover:bg-white/10 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition"
+                            >
+                                My Orders
+                            </Link>
                             <button
                                 onClick={handleLogout}
                                 className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition cursor-pointer"

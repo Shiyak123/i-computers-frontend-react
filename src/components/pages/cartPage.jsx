@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiTrash, BiArrowBack, BiShoppingBag } from "react-icons/bi";
 import { getCart, updateQuantity, removeFromCart, clearCart, getTotal, getTotalCount } from "../../utils/cart";
 
 export default function CartPage() {
     const [cart, setCart] = useState(getCart());
+    const navigate = useNavigate();
 
     useEffect(() => {
         function syncCart() {
@@ -207,17 +208,21 @@ export default function CartPage() {
                             <span className="text-xl text-accent">LKR {cartTotal.toLocaleString()}</span>
                         </div>
 
-                        {/* Checkout Disabled Placeholder */}
+                        {/* Proceed to Checkout */}
                         <div className="mt-4 pt-2">
                             <button
-                                disabled
-                                className="w-full py-3.5 px-6 bg-accent/40 text-white/60 font-semibold rounded-xl text-center cursor-not-allowed border border-accent/20"
+                                onClick={() => {
+                                    const token = localStorage.getItem("token");
+                                    if (!token) {
+                                        navigate("/login");
+                                    } else {
+                                        navigate("/checkout");
+                                    }
+                                }}
+                                className="w-full py-3.5 px-6 bg-accent hover:opacity-90 text-white font-semibold rounded-xl text-center cursor-pointer transition shadow-lg"
                             >
-                                Checkout (Coming Soon)
+                                Proceed to Checkout
                             </button>
-                            <p className="text-xs text-gray-400 text-center mt-2 italic">
-                                Checkout functionality will be enabled in a future phase.
-                            </p>
                         </div>
                     </div>
 

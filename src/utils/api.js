@@ -5,4 +5,13 @@ const api = axios.create({
     baseURL: "http://localhost:3000/api", // Manually setting this fixes the 404
 });
 
-export default api;
+// Attach JWT token to every request when available
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+});
+
+export default api;
