@@ -7,22 +7,25 @@ import LoginPage from './components/pages/loginPage'
 import RegisterPage from './components/pages/registerPage'
 import AdminPage from './components/pages/adminPage'
 import TestPage from './components/pages/testPage'
+import Header from './components/header'
 import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
-    <div className="w-full h-screen bg-red-900">
+    <div className="w-full min-h-screen flex flex-col bg-red-900">
       <Toaster position='top-right' />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signin" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<RegisterPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path='/admin/*' element={<AdminPage />} />
-        <Route path='/test' element={<TestPage />} />
-
-      </Routes>
+      <Header />
+      <div className="flex-1">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signin" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<RegisterPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path='/admin/*' element={<AdminPage />} />
+          <Route path='/test' element={<TestPage />} />
+        </Routes>
+      </div>
     </div>
   )
 }
