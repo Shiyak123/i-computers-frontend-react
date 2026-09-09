@@ -3,15 +3,26 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { BsCart, BsSearch, BsPersonCircle } from "react-icons/bs";
 import logo from "../assets/logo.png";
+import { getCart, getTotalCount } from "../utils/cart";
 
 export default function Header() {
     const [searchQuery, setSearchQuery] = useState("");
     const [token, setToken] = useState(localStorage.getItem("token"));
+    const [cartCount, setCartCount] = useState(() => getTotalCount(getCart()));
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         setToken(localStorage.getItem("token"));
+
+        function updateCartCount() {
+            setCartCount(getTotalCount(getCart()));
+        }
+
+        updateCartCount();
+
+        window.addEventListener("cartUpdated", updateCartCount);
+        return () => window.removeEventListener("cartUpdated", updateCartCount);
     }, [location]);
 
     function handleLogout() {
@@ -69,6 +80,11 @@ export default function Header() {
                     {/* Cart Icon */}
                     <Link to="/cart" aria-label="Shopping Cart" className="relative p-1 hover:text-accent transition">
                         <BsCart className="text-2xl" />
+                        {cartCount > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 bg-accent text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-secondary shadow-sm">
+                                {cartCount > 99 ? "99+" : cartCount}
+                            </span>
+                        )}
                     </Link>
 
                     {/* Authentication Section */}
