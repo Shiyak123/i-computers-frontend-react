@@ -9,6 +9,7 @@ import AdminPage from './components/pages/adminPage'
 import TestPage from './components/pages/testPage'
 import ProductsPage from './components/pages/productsPage'
 import ProductOverview from './components/pages/productOverview'
+import CartPage from './components/pages/cartPage'
 import Header from './components/header'
 import { Toaster } from 'react-hot-toast'
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:productId" element={<ProductOverview />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<RegisterPage />} />

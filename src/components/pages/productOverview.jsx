@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import api from "../../utils/api";
+import { addToCart } from "../../utils/cart";
 import { BiArrowBack } from "react-icons/bi";
 
 export default function ProductOverview() {
@@ -189,17 +191,26 @@ export default function ProductOverview() {
                         </div>
                     </div>
 
-                    {/* Add to Cart Disabled Button Placeholder (Cart feature coming in next phase) */}
+                    {/* Add to Cart Button */}
                     <div className="mt-6 pt-4 border-t border-white/10">
                         <button
-                            disabled
-                            className="w-full py-3.5 px-6 bg-accent/40 text-white/60 font-semibold rounded-xl text-center cursor-not-allowed border border-accent/20"
+                            onClick={() => {
+                                if (isAvailable && (typeof stock !== "number" || stock > 0)) {
+                                    addToCart(product, 1);
+                                    toast.success("Product added to cart");
+                                } else {
+                                    toast.error("Product is currently unavailable");
+                                }
+                            }}
+                            disabled={!isAvailable || (typeof stock === "number" && stock <= 0)}
+                            className={`w-full py-3.5 px-6 font-semibold rounded-xl text-center transition ${
+                                isAvailable && (typeof stock !== "number" || stock > 0)
+                                    ? "bg-accent hover:opacity-90 text-white cursor-pointer shadow-lg hover:shadow-accent/20"
+                                    : "bg-gray-700/50 text-gray-400 cursor-not-allowed border border-white/10"
+                            }`}
                         >
-                            Add to Cart (Cart Coming Soon)
+                            {isAvailable && (typeof stock !== "number" || stock > 0) ? "Add to Cart" : "Out of Stock"}
                         </button>
-                        <p className="text-xs text-gray-400 text-center mt-2 italic">
-                            Shopping Cart functionality will be enabled in the upcoming phase.
-                        </p>
                     </div>
 
                 </div>
