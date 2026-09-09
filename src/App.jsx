@@ -7,6 +7,8 @@ import LoginPage from './components/pages/loginPage'
 import RegisterPage from './components/pages/registerPage'
 import AdminPage from './components/pages/adminPage'
 import TestPage from './components/pages/testPage'
+import ProductsPage from './components/pages/productsPage'
+import ProductOverview from './components/pages/productOverview'
 import Header from './components/header'
 import { Toaster } from 'react-hot-toast'
 
@@ -18,6 +20,8 @@ function App() {
       <div className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:productId" element={<ProductOverview />} />
           <Route path="/signin" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<RegisterPage />} />

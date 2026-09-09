@@ -23,6 +23,11 @@ export default function Header() {
 
     function handleSearchSubmit(e) {
         e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+        } else {
+            navigate("/products");
+        }
     }
 
     return (
