@@ -1,118 +1,96 @@
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { BiKey } from "react-icons/bi";
 import { BsGoogle } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../utils/api";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
 
-    const handleLogin = async () => {
+    const navigate = useNavigate()
+
+    async function handleLogin() {
+
+        setLoading(true)
+
         try {
-            setLoading(true);
+            const res = await api.post("/users/login", {
+                email: email,
+                password: password
+            })
 
-            const res = await axios.post(
-                "http://localhost:3000/user/login",
-                {
-                    email,
-                    password,
-                }
-            );
+            localStorage.setItem("token", res.data.token)
 
-            console.log(res.data);
-            toast.success("Login successful!");
-        } catch (error) {
-            console.error(error.response?.data || error.message);
+            if (res.data.isAdmin) {
 
-            toast.error(
-                error.response?.data?.message ||
-                "Login failed. Please check your credentials."
-            );
-        } finally {
-            setLoading(false);
+                //window.location.href = "/admin"
+
+                navigate("/admin")
+
+            } else {
+
+                //window.location.href = "/"
+
+                navigate("/")
+
+            }
+
+        } catch (err) {
+
+            toast.error(err?.response?.data?.message || "Login failed")
+
         }
-    };
+        setLoading(false)
+    }
 
     return (
-        <div className="w-full min-h-screen bg-[url('/login_pg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center">
-            <div className="w-[400px] h-[600px] backdrop-blur-md shadow-2xl shadow-white rounded-xl flex flex-col items-center justify-center gap-10">
-                <h1 className="w-full text-center text-3xl font-bold text-white">
-                    Login
-                </h1>
+        <div className="w-full h-full bg-[url('/login_pg.jpg')] bg-cover bg-no-repeat flex justify-center items-center">
 
-                <div className="w-full px-10 flex flex-col gap-5">
-                    <label
-                        htmlFor="email"
-                        className="text-white flex items-center justify-center gap-2"
-                    >
-                        <MdEmail />
-                        Email
-                    </label>
+            <div className="w-[400px] h-[500px] backdrop-blur-md shadow-2xl shadow-white rounded-xl flex flex-col p-4">
 
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="sample@example.com"
+                <h1 className="w-full h-[80px] text-center text-3xl font-bold text-white">Login</h1>
+
+                <div className="w-full  ">
+                    <label className="text-white text-lg flex items-center  gap-2"><MdEmail /> Email</label>
+                    <input className="w-full h-[40px] rounded-md px-2 border border-white" type="email" placeholder="sample@gmail.com"
+                        onChange={
+                            (e) => {
+                                setEmail(e.target.value)
+                            }
+                        }
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="text-black border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-
-                    <label
-                        htmlFor="password"
-                        className="text-white flex items-center justify-center gap-2"
-                    >
-                        <BiKey />
-                        Password
-                    </label>
-
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="**********"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="text-black border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <p className="text-center text-white">
-                        Forgot your password?{" "}
-                        <Link
-                            to="/forgot-password"
-                            className="text-blue-400 hover:text-blue-300 hover:underline"
-                        >
-                            Click here
-                        </Link>
-                    </p>
-
-                    <button
-                        onClick={handleLogin}
-                        disabled={loading}
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {loading ? "Logging in..." : "Login"}
-                    </button>
-
-                    <p className="text-center text-white">
-                        Don't have an account?{" "}
-                        <Link
-                            to="/register"
-                            className="text-blue-400 hover:text-blue-300 hover:underline"
-                        >
-                            Register Here
-                        </Link>
-                    </p>
-
-                    <button className="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition duration-300 flex items-center justify-center gap-2">
-                        <BsGoogle />
-                        Login with Google
-                    </button>
                 </div>
+
+                <div className="w-full  mt-5">
+                    <label className="text-white text-lg flex items-center  gap-2"><BiKey /> Password</label>
+                    <input
+                        onChange={
+                            (e) => {
+                                setPassword(e.target.value)
+                            }
+                        }
+                        type="password"
+                        value={password}
+                        className="w-full h-[40px] rounded-md px-2 border border-white" placeholder="•••••••••••" />
+                </div>
+                <p className="w-full h-2 text-white text-right italic">Forget your password? click <Link to="/forget-password" className="font-bold text-accent">Here</Link> </p>
+                <button disabled={loading} className="w-full h-[50px] bg-accent mt-10 text-white rounded-lg" onClick={handleLogin}>
+                    {
+                        loading ? "Loading..." : "Login"
+                    }
+                </button>
+                <p className="w-full h-2 text-white text-right italic ">Don't have an account? click <Link to="/signup" className="font-bold text-accent">Here</Link> </p>
+                <button className="w-full h-[50px] bg-secondary mt-5 text-white rounded-lg flex justify-center items-center gap-2"><BsGoogle /> Sign In with Google</button>
             </div>
         </div>
-    );
+    )
 }
+
+//181800 secondary
+//f4f4f4 primary
+//001a84 accent
