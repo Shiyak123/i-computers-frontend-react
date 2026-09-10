@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { BsGift } from "react-icons/bs";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart, FiArrowLeft } from "react-icons/fi";
 import { TbUsers } from "react-icons/tb";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import AdminProductsPage from "./admin/adminProductPage";
 import AdminAddProductForm from "./admin/adminAddProdctForm";
+import AdminEditProductForm from "./admin/adminEditProductForm";
 import AdminOrdersPage from "./admin/adminOrdersPage";
+import logo from "../../assets/logo.png";
 
 export default function AdminPage() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isAdminAuthorized, setIsAdminAuthorized] = useState(false);
 
     useEffect(() => {
@@ -40,39 +43,86 @@ export default function AdminPage() {
         return null;
     }
 
+    const currentPath = location.pathname;
+    const isOrdersActive = currentPath === "/admin" || currentPath === "/admin/";
+    const isProductsActive = currentPath.startsWith("/admin/products") || currentPath.startsWith("/admin/add-product") || currentPath.startsWith("/admin/edit-product");
+    const isUsersActive = currentPath.startsWith("/admin/users");
+
     return (
-        <div className="w-full h-full flex bg-primary">
+        <div className="w-full h-full flex bg-primary min-h-[calc(100vh-64px)]">
 
-            <div className="w-[300px] h-full bg-white flex flex-col shadow-2xl">
-                <div className="w-full h-[100px] py-4 px-2">
+            {/* Admin Sidebar */}
+            <div className="w-[260px] sm:w-[280px] bg-secondary border-r border-white/10 flex flex-col justify-between shadow-2xl flex-shrink-0">
+                <div>
+                    {/* Brand Banner */}
+                    <div className="w-full py-5 px-6 border-b border-white/10 flex items-center gap-3">
+                        <img src={logo} alt="I Computers" className="h-9 w-auto object-contain" />
+                        <div>
+                            <span className="text-sm font-extrabold text-white tracking-wider block">ADMIN PANEL</span>
+                            <span className="text-[10px] text-accent uppercase font-semibold">Management Console</span>
+                        </div>
+                    </div>
 
-                    <img src="/logo.png" className="h-full " />
+                    {/* Navigation Menu */}
+                    <nav className="p-3 space-y-1.5">
+                        <Link
+                            to="/admin"
+                            className={`w-full px-4 py-3 text-sm font-medium rounded-xl flex items-center gap-3 transition ${
+                                isOrdersActive
+                                    ? "bg-accent text-white shadow-lg font-semibold"
+                                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                            }`}
+                        >
+                            <FiShoppingCart className="text-lg" />
+                            <span>Orders</span>
+                        </Link>
 
+                        <Link
+                            to="/admin/products"
+                            className={`w-full px-4 py-3 text-sm font-medium rounded-xl flex items-center gap-3 transition ${
+                                isProductsActive
+                                    ? "bg-accent text-white shadow-lg font-semibold"
+                                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                            }`}
+                        >
+                            <BsGift className="text-lg" />
+                            <span>Products</span>
+                        </Link>
+
+                        <Link
+                            to="/admin/users"
+                            className={`w-full px-4 py-3 text-sm font-medium rounded-xl flex items-center gap-3 transition ${
+                                isUsersActive
+                                    ? "bg-accent text-white shadow-lg font-semibold"
+                                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                            }`}
+                        >
+                            <TbUsers className="text-lg" />
+                            <span>Users</span>
+                        </Link>
+                    </nav>
                 </div>
 
-                <Link to="/admin" className="w-full p-4 text-xl text-gray-500  flex items-center gap-4">
-                    <FiShoppingCart />
-                    <span className="w-full h-full block ">Orders</span>
-                </Link>
-
-                <Link to="/admin/products" className="w-full p-4 text-xl text-gray-500  flex items-center gap-4">
-                    <BsGift />
-                    <span className="w-full h-full block ">Products</span>
-                </Link>
-
-                <Link to="/admin/users" className="w-full p-4 text-xl text-gray-500  flex items-center gap-4">
-                    <TbUsers />
-                    <span className="w-full h-full block ">Users</span>
-                </Link>
-
+                {/* Bottom Actions */}
+                <div className="p-4 border-t border-white/10">
+                    <Link
+                        to="/"
+                        className="w-full px-4 py-2.5 text-xs font-semibold text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center gap-2 transition border border-white/10"
+                    >
+                        <FiArrowLeft className="text-sm" />
+                        Back to Store
+                    </Link>
+                </div>
             </div>
 
-            <div className="w-[calc(100%-300px)] h-full p-4">
+            {/* Admin Content Area */}
+            <div className="flex-1 p-6 overflow-y-auto">
                 <Routes>
                     <Route path="/" element={<AdminOrdersPage />} />
                     <Route path="/products" element={<AdminProductsPage />} />
                     <Route path="/users" element={<h1>Users Page</h1>} />
                     <Route path="/add-product" element={<AdminAddProductForm />} />
+                    <Route path="/edit-product" element={<AdminEditProductForm />} />
                 </Routes>
             </div>
         </div>

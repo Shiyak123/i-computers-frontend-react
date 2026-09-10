@@ -44,25 +44,24 @@ export default function AdminAddProductForm() {
 
             const imageUrls = await Promise.all(imageUploadPromises);
 
-            const altNamesArray = altNames.split(",")
-
-            console.log(altNamesArray)
-
+            const altNamesArray = altNames
+                ? altNames.split(",").map((s) => s.trim()).filter((s) => s.length > 0)
+                : [];
 
             const requestBody = {
-                productId: productId,
-                name: name,
-                altNames: altNamesArray,
-                description: description,
-                price: price,
-                labelledPrice: labelledPrice,
-                images: imageUrls,
-                isAvailable: isAvailable,
+                productId: productId.trim(),
+                name: name.trim(),
+                alternativeName: altNamesArray,
+                description: description.trim(),
+                price: Number(price),
+                labelPrice: Number(labelledPrice) || Number(price),
+                image: imageUrls,
+                isAvailable: Boolean(isAvailable === true || isAvailable === "true"),
                 category: category,
-                stock: stock,
+                stock: Number(stock) || 0,
                 brand: brand,
                 model: model
-            }
+            };
 
             //backend
             await api.post("/products", requestBody,
