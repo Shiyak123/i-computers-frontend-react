@@ -26,18 +26,18 @@ const CATEGORIES = [
 const VALUE_PROPOSITIONS = [
     {
         icon: FiShield,
-        title: "100% Genuine Hardware",
-        desc: "All components backed by authorized manufacturer warranty"
+        title: "Quality Hardware Specifications",
+        desc: "Detailed component specifications for gaming and workstation builds"
     },
     {
         icon: FiTruck,
-        title: "Island-wide Fast Delivery",
-        desc: "Secure insured shipping with door-to-door tracking"
+        title: "Order Tracking & Dispatch",
+        desc: "Streamlined order processing with clear fulfillment status updates"
     },
     {
         icon: FiZap,
-        title: "Competitive Pricing",
-        desc: "Best retail and wholesale prices on the latest hardware"
+        title: "Transparent Pricing",
+        desc: "Clear catalog pricing with detailed product information"
     }
 ];
 
