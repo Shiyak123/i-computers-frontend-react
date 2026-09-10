@@ -17,7 +17,7 @@ import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
-    <div className="w-full min-h-screen flex flex-col bg-red-900">
+    <div className="w-full min-h-screen flex flex-col bg-primary text-slate-100">
       <Toaster position='top-right' />
       <Header />
       <div className="flex-1">

@@ -78,14 +78,25 @@ export default function LoginPage() {
                         value={password}
                         className="w-full h-[40px] rounded-md px-2 border border-white" placeholder="•••••••••••" />
                 </div>
-                <p className="w-full h-2 text-white text-right italic">Forget your password? click <Link to="/forget-password" className="font-bold text-accent">Here</Link> </p>
-                <button disabled={loading} className="w-full h-[50px] bg-accent mt-10 text-white rounded-lg" onClick={handleLogin}>
+                <p className="w-full mt-2 text-xs text-gray-400 text-right italic">
+                    Forgot your password? Contact administrator for assistance.
+                </p>
+                <button disabled={loading} className="w-full h-[50px] bg-accent mt-8 text-white rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-50" onClick={handleLogin}>
                     {
                         loading ? "Loading..." : "Login"
                     }
                 </button>
-                <p className="w-full h-2 text-white text-right italic ">Don't have an account? click <Link to="/signup" className="font-bold text-accent">Here</Link> </p>
-                <button className="w-full h-[50px] bg-secondary mt-5 text-white rounded-lg flex justify-center items-center gap-2"><BsGoogle /> Sign In with Google</button>
+                <p className="w-full mt-4 text-xs text-gray-300 text-right italic">
+                    Don't have an account? <Link to="/signup" className="font-bold text-accent hover:underline">Register here</Link>
+                </p>
+                <button
+                    type="button"
+                    disabled
+                    title="Google sign-in is not configured yet"
+                    className="w-full h-[50px] bg-secondary/70 border border-white/20 mt-4 text-gray-400 rounded-lg flex justify-center items-center gap-2 cursor-not-allowed text-sm"
+                >
+                    <BsGoogle /> Sign In with Google (Coming Soon)
+                </button>
             </div>
         </div>
     )
